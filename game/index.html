@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SKYPOST — Island Mail Run</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<div id="game"></div>
+<!-- Flight instruments: altitude, speed, heading, fuel, throttle, gear -->
+<div id="hud" class="hidden">
+  <div id="hud-top">
+    <div class="gauge" id="gauge-alt"><div class="gauge-label">ALT</div><div class="gauge-value" id="alt-value">0</div><div class="gauge-unit">FT</div></div>
+    <div class="gauge" id="gauge-spd"><div class="gauge-label">SPEED</div><div class="gauge-value" id="spd-value">0</div><div class="gauge-unit">KT</div></div>
+    <div class="gauge" id="gauge-hdg"><div class="gauge-label">HEADING</div><div class="gauge-value" id="hdg-value">090</div><div class="gauge-unit">DEG</div></div>
+    <div class="gauge" id="gauge-vs"><div class="gauge-label">VERT SPD</div><div class="gauge-value" id="vs-value">0</div><div class="gauge-unit">FT/MIN</div></div>
+  </div>
+  <div id="compass"><div id="compass-strip"></div><div id="compass-needle"></div></div>
+  <div id="hud-right">
+    <div class="panel" id="fuel-panel">
+      <div class="panel-label">FUEL</div>
+      <div class="bar"><div id="fuel-fill"></div></div>
+      <div class="panel-value" id="fuel-value">100%</div>
+    </div>
+    <div class="panel" id="throttle-panel">
+      <div class="panel-label">THROTTLE</div>
+      <div class="bar"><div id="throttle-fill"></div></div>
+      <div class="panel-value" id="throttle-value">0%</div>
+    </div>
+    <div class="panel" id="gear-panel">
+      <div class="panel-label">GEAR</div>
+      <div class="panel-value" id="gear-value">DOWN</div>
+    </div>
+  </div>
+  <div id="objective"><div id="objective-title">RING RUN</div><div id="objective-text"></div></div>
+  <div id="horizon-wrap"><canvas id="horizon" width="220" height="220"></canvas><div id="horizon-label">ATTITUDE</div></div>
+  <div id="message"></div>
+  <div id="warning"></div>
+</div>
+<!-- Title menu -->
+<div id="menu" class="overlay">
+  <div class="menu-card">
+    <div class="menu-kicker">MARROW ISLES &middot; EST. 1962</div>
+    <h1>SKYPOST</h1>
+    <div class="menu-sub">Island Mail Run &mdash; fly the Kestrel K-4</div>
+    <div class="mission-list">
+      <button class="mission-btn" data-mission="rings">
+        <span class="mission-name">1 &middot; RING RUN</span>
+        <span class="mission-desc">Thread 8 sky rings, then land on runway 27.</span>
+      </button>
+      <button class="mission-btn" data-mission="mail">
+        <span class="mission-name">2 &middot; MAIL DROP</span>
+        <span class="mission-desc">Drop 3 parcels on the marked fields, low and slow.</span>
+      </button>
+      <button class="mission-btn" data-mission="landing">
+        <span class="mission-name">3 &middot; PRECISION LANDING</span>
+        <span class="mission-desc">One circuit, one touchdown &mdash; grease it in the zone.</span>
+      </button>
+    </div>
+    <div class="controls">
+      <span><b>&uarr;/&darr;</b> pitch</span><span><b>&larr;/&rarr;</b> bank &amp; turn</span>
+      <span><b>Shift / Ctrl</b> throttle</span><span><b>Space</b> airbrake</span>
+      <span><b>F / click</b> drop parcel</span><span><b>G</b> landing gear</span>
+      <span><b>C</b> camera</span><span><b>Mouse</b> steer</span>
+      <span><b>R</b> restart</span><span><b>P</b> pause</span><span><b>M</b> sound</span>
+    </div>
+    <div class="menu-foot">Fuel burns. Rings pay. The runway forgives nothing.</div>
+  </div>
+</div>
+<!-- Pause and end-of-flight overlays -->
+<div id="pause" class="overlay hidden">
+  <div class="menu-card small">
+    <h2>PAUSED</h2>
+    <p class="menu-sub">The Kestrel holds her breath.</p>
+    <button class="mission-btn" id="resume-btn"><span class="mission-name">RESUME &mdash; press P</span></button>
+  </div>
+</div>
+<div id="end" class="overlay hidden">
+  <div class="menu-card small">
+    <h2 id="end-title">LANDED</h2>
+    <p class="menu-sub" id="end-sub"></p>
+    <div id="end-score"></div>
+    <div class="end-stats" id="end-stats"></div>
+    <button class="mission-btn" id="again-btn"><span class="mission-name">FLY AGAIN &mdash; press R</span></button>
+    <button class="mission-btn ghost" id="menu-btn"><span class="mission-name">BACK TO MENU</span></button>
+  </div>
+</div>
+<script src="vendor/three.min.js"></script>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
+
+
+
+
+
