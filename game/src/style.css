@@ -1,0 +1,129 @@
+/* SKYPOST — Island Mail Run: HUD and screen styling. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0b1626; }
+body {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: #eaf2ff;
+  -webkit-user-select: none; user-select: none;
+}
+#game { position: fixed; inset: 0; }
+#game canvas { display: block; }
+.hidden { display: none !important; }
+#hud { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+#hud-top {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 10px;
+}
+.gauge {
+  min-width: 104px; padding: 8px 12px 7px; text-align: center;
+  background: rgba(8, 20, 38, 0.62);
+  border: 1px solid rgba(140, 220, 255, 0.45);
+  border-radius: 10px;
+  box-shadow: 0 0 18px rgba(60, 180, 255, 0.25), inset 0 0 22px rgba(40, 140, 255, 0.12);
+  backdrop-filter: blur(2px);
+}
+.gauge-label { font-size: 10px; letter-spacing: 3px; color: #8fd8ff; font-weight: 700; }
+.gauge-value {
+  font-size: 30px; line-height: 1.05; font-weight: 800; color: #eafaff;
+  text-shadow: 0 0 12px rgba(120, 220, 255, 0.9); font-variant-numeric: tabular-nums;
+}
+.gauge-unit { font-size: 10px; letter-spacing: 2px; color: #9db8d6; }
+#compass {
+  position: absolute; top: 96px; left: 50%; transform: translateX(-50%);
+  width: 340px; height: 30px; overflow: hidden;
+  background: rgba(8, 20, 38, 0.55);
+  border: 1px solid rgba(140, 220, 255, 0.35); border-radius: 8px;
+}
+#compass-strip {
+  position: absolute; top: 0; left: 0; height: 30px; white-space: nowrap;
+  font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #bfe9ff;
+  line-height: 30px;
+}
+#compass-needle {
+  position: absolute; left: 50%; top: 0; width: 2px; height: 30px;
+  background: #ffd75e; box-shadow: 0 0 8px #ffd75e; transform: translateX(-1px);
+}
+#hud-right {
+  position: absolute; top: 14px; right: 14px;
+  display: flex; flex-direction: column; gap: 10px; width: 168px;
+}
+.panel {
+  padding: 8px 12px; background: rgba(8, 20, 38, 0.62);
+  border: 1px solid rgba(140, 220, 255, 0.4); border-radius: 10px;
+}
+.panel-label { font-size: 10px; letter-spacing: 3px; color: #8fd8ff; font-weight: 700; }
+.panel-value { font-size: 18px; font-weight: 800; color: #eafaff; font-variant-numeric: tabular-nums; }
+.bar { height: 8px; margin: 6px 0 4px; background: rgba(255,255,255,0.12); border-radius: 4px; overflow: hidden; }
+.bar > div { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #37c8ff, #7ef0c1); transition: width 0.15s linear; }
+#fuel-fill.low { background: linear-gradient(90deg, #ff5d5d, #ff9a3d); }
+#objective {
+  position: absolute; top: 14px; left: 14px; max-width: 300px;
+  padding: 10px 14px; background: rgba(8, 20, 38, 0.62);
+  border: 1px solid rgba(140, 220, 255, 0.4); border-radius: 10px;
+}
+#objective-title { font-size: 13px; letter-spacing: 3px; color: #ffd75e; font-weight: 800; }
+#objective-text { font-size: 14px; color: #d8e9ff; margin-top: 3px; line-height: 1.45; }
+#horizon-wrap {
+  position: absolute; left: 14px; bottom: 14px; text-align: center;
+}
+#horizon {
+  width: 150px; height: 150px; border-radius: 50%;
+  border: 2px solid rgba(140, 220, 255, 0.55);
+  box-shadow: 0 0 22px rgba(60, 180, 255, 0.35), inset 0 0 30px rgba(0, 0, 0, 0.45);
+  background: rgba(8, 20, 38, 0.5);
+}
+#horizon-label { font-size: 10px; letter-spacing: 3px; color: #8fd8ff; font-weight: 700; margin-top: 5px; }
+#message {
+  position: absolute; top: 150px; left: 50%; transform: translateX(-50%);
+  font-size: 26px; font-weight: 800; letter-spacing: 1px; color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8), 0 0 24px rgba(120, 220, 255, 0.6);
+  opacity: 0; transition: opacity 0.25s; text-align: center; white-space: nowrap;
+}
+#message.show { opacity: 1; }
+#warning {
+  position: absolute; bottom: 190px; left: 50%; transform: translateX(-50%);
+  font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #ff6b5e;
+  text-shadow: 0 0 16px rgba(255, 60, 40, 0.8); opacity: 0; text-align: center;
+}
+#warning.show { opacity: 1; animation: blink 0.7s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0.25; } }
+.overlay {
+  position: fixed; inset: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at 50% 35%, rgba(10, 30, 58, 0.42), rgba(4, 10, 22, 0.82));
+  backdrop-filter: blur(1px);
+}
+.menu-card {
+  width: min(620px, 92vw); padding: 34px 38px 28px; text-align: center;
+  background: rgba(7, 18, 36, 0.78);
+  border: 1px solid rgba(140, 220, 255, 0.4); border-radius: 18px;
+  box-shadow: 0 0 60px rgba(50, 160, 255, 0.25), inset 0 0 40px rgba(40, 140, 255, 0.08);
+}
+.menu-card.small { width: min(460px, 92vw); }
+.menu-kicker { font-size: 11px; letter-spacing: 5px; color: #8fd8ff; font-weight: 700; }
+.menu-card h1 {
+  font-size: 74px; line-height: 1; letter-spacing: 10px; margin: 8px 0 4px;
+  color: #fff; text-shadow: 0 0 30px rgba(120, 210, 255, 0.85), 0 4px 0 rgba(20, 80, 160, 0.6);
+}
+.menu-card h2 { font-size: 44px; letter-spacing: 6px; color: #fff; text-shadow: 0 0 24px rgba(120, 210, 255, 0.8); }
+.menu-sub { font-size: 15px; color: #bcd8f2; margin-bottom: 18px; }
+.mission-list { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 18px; }
+.mission-btn {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  padding: 12px 16px; color: #eaf2ff; background: rgba(30, 90, 160, 0.35);
+  border: 1px solid rgba(140, 220, 255, 0.45); border-radius: 12px;
+  transition: background 0.15s, transform 0.15s;
+}
+.mission-btn:hover { background: rgba(50, 130, 210, 0.55); transform: translateY(-1px); }
+.mission-btn.ghost { background: transparent; }
+.mission-name { display: block; font-size: 16px; font-weight: 800; letter-spacing: 2px; }
+.mission-desc { display: block; font-size: 13px; color: #a9c8e8; margin-top: 2px; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center;
+  font-size: 12px; color: #9db8d6; margin-bottom: 14px;
+}
+.controls b { color: #ffd75e; }
+.menu-foot { font-size: 12px; letter-spacing: 2px; color: #7fa8cc; }
+#end-score { font-size: 40px; font-weight: 800; color: #ffd75e; text-shadow: 0 0 22px rgba(255, 200, 60, 0.7); margin: 6px 0; }
+.end-stats { font-size: 14px; color: #bcd8f2; line-height: 1.7; margin-bottom: 16px; white-space: pre-line; }
+
